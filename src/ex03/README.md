@@ -54,8 +54,8 @@ The full run should give 15 `PASS` lines followed by:
 (A trailing space after `29` is fine. **Stretch:** get rid of it.)
 
 ## Definition of Done
-- [ ] 15/15 PASS and the printed shapes match
-- [ ] Try `printTriangle(0)` and `printTriangle(1)`. Does your code handle them sensibly?
-- [ ] Written note: run `firstMultipleWithDigitSum(3, 1)`. It takes a few seconds and returns a **negative** number. Why is there no correct answer, and what happened to `candidate`? (Link this back to `Integer.MAX_VALUE + 1` in Exercise 1.)
+- [X] 15/15 PASS and the printed shapes match
+- [X] Try `printTriangle(0)` and `printTriangle(1)`. Does your code handle them sensibly?
+- [X] Written note: run `firstMultipleWithDigitSum(3, 1)`. It takes a few seconds and returns a **negative** number. Why is there no correct answer, and what happened to `candidate`? (Link this back to `Integer.MAX_VALUE + 1` in Exercise 1.)
 
 Stuck? See [HINTS.md](HINTS.md).

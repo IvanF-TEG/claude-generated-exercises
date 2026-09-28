@@ -90,7 +90,7 @@ public class ParcelPricer {
      *   4. Members get 10% off (total - total / 10), but ONLY if the total so far is at least 1000p.
      */
     static int quote(double weightKg, String zone, char service, boolean fragile, boolean isMember) {
-        // TODO 4: call the three methods above, combine the conditions with || and &&
+        //  4: call the three methods above, combine the conditions with || and &&
         int weightBandPrice = weightBandPrice(weightKg);
         int zoneSurcharge = zoneSurcharge(zone);
         int serviceMultiplierPercent = serviceMultiplierPercent(service);

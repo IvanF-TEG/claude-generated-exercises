@@ -11,8 +11,19 @@ public class LoopLab {
      * Note: n is a long, because intermediate values can grow very large.
      */
     static int collatzSteps(long n) {
-        // TODO 1
-        return -1;
+        // 1
+        int steps = 0;
+        while (n != 1){
+            if (n % 2 == 0) {
+                n = n/2;
+                steps += 1;
+            }
+            else {
+                n = 3*n + 1;
+                steps += 1;
+            }
+        }
+        return steps;
     }
 
     /**
@@ -20,8 +31,14 @@ public class LoopLab {
      * Loop type: DO-WHILE, which always runs the body at least once. Why does that fix the 0 case?
      */
     static int digitCount(int n) {
-        // TODO 2: hint: Math.abs(n) removes the sign
-        return -1;
+        // 2: hint: Math.abs(n) removes the sign
+        n = Math.abs(n);
+        int count = 0;
+        do {
+            n = n / 10;
+            count += 1;
+        } while (n > 0);
+        return count;
     }
 
     /**
@@ -29,8 +46,14 @@ public class LoopLab {
      * Loop type: DO-WHILE (or while; both work here).
      */
     static int digitSum(int n) {
-        // TODO 3: n % 10 gives the last digit; n / 10 removes it
-        return -1;
+        // 3: n % 10 gives the last digit; n / 10 removes it
+        n = Math.abs(n);
+        int sum = 0;
+        do {
+            sum += n % 10;
+            n = n / 10;
+        } while (n > 0);
+        return sum;
     }
 
     /**
@@ -39,8 +62,16 @@ public class LoopLab {
      * Efficiency: you only need to test divisors i while i * i <= n. Why?
      */
     static boolean isPrime(int n) {
-        // TODO 4
-        return false;
+        // 4
+        if (n < 2){
+            return false;
+        }
+        for (int i = 2; i * i <= n; i++){
+            if (n % i == 0){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -49,7 +80,14 @@ public class LoopLab {
      * Use System.out.print (no new line) inside the loop and System.out.println() at the end.
      */
     static void printPrimesUpTo(int limit) {
-        // TODO 5
+        // 5
+        for (int i = 2; i <= limit; i++){
+            if (!isPrime(i)){
+                continue;
+            }
+            System.out.print(i + " ");
+        }
+        System.out.println();
     }
 
     /**
@@ -62,7 +100,21 @@ public class LoopLab {
      * Loop type: NESTED FOR loops (an outer loop for rows, inner loops for spaces and stars).
      */
     static void printTriangle(int height) {
-        // TODO 6
+        // 6
+        int baseSize = 2 * (height - 1) + 1;
+        for (int row = 0; row < height; row++){
+           int stars = 2 * row + 1;
+           for (int col = 0; col < baseSize; col++){
+               if (col < (baseSize - stars) / 2){
+                   System.out.print(" ");
+               } else if (col < baseSize - (baseSize - stars) / 2) {
+                   System.out.print("*");
+               } else {
+                   System.out.print(" ");
+               }
+           }
+            System.out.println();
+        }
     }
 
     /**
@@ -71,8 +123,17 @@ public class LoopLab {
      * Loop type: while (true) with 'break' when found. Reuse digitSum!
      */
     static int firstMultipleWithDigitSum(int k, int target) {
-        // TODO 7
-        return -1;
+        //  7
+        int i = 0, candidate = -1;
+        while (true){
+            if (digitSum(k * i) == target){
+                candidate = k * i;
+                break;
+            }
+            i++;
+        }
+        return candidate; //This can time out (all multiples of 3 have digit-sums that are multiples of 3 so
+        // while loop never breaks. It eventually returns -1000000000.
     }
 
     // ---------------------------------------------------------------
@@ -98,6 +159,13 @@ public class LoopLab {
         printPrimesUpTo(30);
         System.out.println("--- printTriangle(4) ---");
         printTriangle(4);
+        System.out.println("--- printTriangle(1) ---");
+        printTriangle(1);
+        System.out.println("--- printTriangle(5) ---");
+        printTriangle(5);
+        System.out.println("--- printTriangle(0) ---");
+        printTriangle(0);
+        System.out.println(firstMultipleWithDigitSum(3, 1));
     }
 
     // Two methods with the SAME name but different parameter types: this is "overloading".
