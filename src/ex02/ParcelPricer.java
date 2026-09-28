@@ -16,21 +16,38 @@ public class ParcelPricer {
      *   over 20 kg             -> INVALID (too heavy)
      */
     static int weightBandPrice(double weightKg) {
-        // TODO 1: use an if / else if / else chain
-        return 0;
+        // 1: use an if / else if / else chain
+        if (weightKg <= 0){
+            return INVALID;
+        } else if (weightKg <= 1){
+            return 350;
+        } else if (weightKg <= 5) {
+            return 600;
+        } else if (weightKg <= 20) {
+            return 1200;
+        } else {
+            return INVALID;
+        }
     }
 
     /**
      * Zone surcharge in pence: "LOCAL" 0, "NATIONAL" 250, "EUROPE" 900, "WORLD" 1800, anything else INVALID.
      */
     static int zoneSurcharge(String zone) {
-        // TODO 2: use a modern switch EXPRESSION (arrow syntax), which returns a value:
+        // 2: use a modern switch EXPRESSION (arrow syntax), which returns a value:
         //   return switch (zone) {
         //       case "LOCAL" -> 0;
         //       ...
         //       default -> INVALID;
         //   };
-        return 0;
+        return switch (zone) {
+            case "LOCAL" -> 0;
+            case "NATIONAL" -> 250;
+            case "EUROPE" -> 900;
+            case "WORLD" -> 1800;
+            default -> INVALID; // When deleted, compiler says: the switch expression does not cover all possible input
+            // values. This is good since ensures all possible cases are covered.
+        };
     }
 
     /**
@@ -41,10 +58,28 @@ public class ParcelPricer {
      *   anything else          -> INVALID
      */
     static int serviceMultiplierPercent(char service) {
-        // TODO 3: use a CLASSIC switch STATEMENT (case X: ... break;).
+        //  3: use a CLASSIC switch STATEMENT (case X: ... break;).
         //   Use fall-through on purpose to group 'S' and 's' together.
         //   Then deliberately delete one 'break;', re-run, and write down what happened.
-        return 0;
+        int multiplier = 0;
+        switch (service){
+            case 'S':
+            case 's':
+                multiplier = 100;
+                break;
+            case 'E':
+            case 'e':
+                multiplier = 150;
+                break; //When deleted, the next cases are evaluated.
+            case 'N':
+            case 'n':
+                multiplier = 200;
+                break;
+            default:
+                multiplier = INVALID;
+                break;
+        }
+        return multiplier;
     }
 
     /**
@@ -56,16 +91,29 @@ public class ParcelPricer {
      */
     static int quote(double weightKg, String zone, char service, boolean fragile, boolean isMember) {
         // TODO 4: call the three methods above, combine the conditions with || and &&
-        return 0;
+        int weightBandPrice = weightBandPrice(weightKg);
+        int zoneSurcharge = zoneSurcharge(zone);
+        int serviceMultiplierPercent = serviceMultiplierPercent(service);
+        if (weightBandPrice == INVALID || zoneSurcharge == INVALID || serviceMultiplierPercent == INVALID){
+            return INVALID;
+        }
+        double total = (double) (weightBandPrice + zoneSurcharge) * serviceMultiplierPercent / 100;
+        if (fragile){
+            total += 300;
+        }
+        if (isMember && total >= 1000){
+            total -= total / 10;
+        }
+        return (int) total;
     }
 
     /**
      * Returns "INVALID" for negative values, otherwise a £ string, e.g. 2550 -> "£25.50".
      */
     static String describe(int pence) {
-        // TODO 5: write this as ONE line using the ternary operator:  condition ? valueIfTrue : valueIfFalse
+        // 5: write this as ONE line using the ternary operator:  condition ? valueIfTrue : valueIfFalse
         //   String.format works like printf but RETURNS the String instead of printing it.
-        return "";
+        return (pence < 0) ? "INVALID" : String.format("£%d.%02d", pence / 100, pence % 100);
     }
 
     // ---------------------------------------------------------------

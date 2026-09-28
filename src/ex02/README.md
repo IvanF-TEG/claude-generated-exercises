@@ -41,8 +41,8 @@ javac -d out src/ex02/ParcelPricer.java && java -cp out ex02.ParcelPricer
 When you run `main`, all 18 lines should start with `PASS`. Before you've written anything they'll all say `FAIL`.
 
 ## Definition of Done
-- [ ] 18/18 PASS
-- [ ] Written note: what happened when you removed a `break`?
+- [X] 18/18 PASS
+- [X] Written note: what happened when you removed a `break`?
 - [ ] Written note: delete the `default ->` line from `zoneSurcharge`. What does the compiler say, and why is that a *good* thing?
 
 Stuck? See [HINTS.md](HINTS.md).
