@@ -14,26 +14,48 @@ public class WeatherStats {
 
     /** Mean of the values. Use an ENHANCED for loop. */
     static double average(double[] values) {
-        // TODO 1
-        return 0;
+        // 1
+        double sum = 0;
+        for (double val : values){
+            sum += val;
+        }
+        return (sum / values.length);
     }
 
     /** Largest value. Assume the array isn't empty. Start from values[0], not 0. Why? */
+    // Why: array could be entirely negative.
     static double max(double[] values) {
-        // TODO 2
-        return 0;
+        // 2
+        double max = values[0];
+        for (double val : values){
+            max = (val > max) ? val : max;
+        }
+        return max;
     }
 
     /** INDEX of the smallest value (the first one if tied). Needs an index-based for loop. Why? */
+    // Why: we care about the index, which the enhanced for loop doesn't provide.
     static int indexOfMin(double[] values) {
-        // TODO 3
-        return -1;
+        // 3
+        double min = values[0];
+        int minIndex = 0;
+        for (int i = 1; i < values.length; i++){
+            if (values[i] < min){
+                min = values[i];
+                minIndex = i;
+            }
+        }
+        return minIndex;
     }
 
     /** How many values are STRICTLY greater than the threshold. */
     static int countAbove(double[] values, double threshold) {
-        // TODO 4
-        return -1;
+        // 4
+        int countAbove = 0;
+        for (double val : values) {
+            countAbove += (val > threshold) ? 1 : 0;
+        }
+        return countAbove;
     }
 
     /**
@@ -44,8 +66,22 @@ public class WeatherStats {
      * If nothing rises, every single element is a run of length 1, so return {0, 1}.
      */
     static int[] longestRisingStreak(double[] values) {
-        // TODO 5: create the result with: return new int[] {bestStart, bestLength};
-        return new int[0];
+        // 5: create the result with: return new int[] {bestStart, bestLength};
+        int bestLength = 1;
+        int bestStart = 0;
+        for (int i = 0; i < values.length; i++){
+            int lengthAtIndex = 1;
+            int j = i;
+            while (j + 1 < values.length && values[j] < values[j + 1]){
+                lengthAtIndex += 1;
+                j++;
+            } // when this while loop fails, not rising
+            if (bestLength < lengthAtIndex){
+                bestLength = lengthAtIndex;
+                bestStart = i;
+            }
+        }
+        return new int[] {bestStart, bestLength};
     }
 
     /**
@@ -54,8 +90,17 @@ public class WeatherStats {
      * {1, 2, 3, 4} with window 2 -> {1.5, 2.5, 3.5}
      */
     static double[] movingAverage(double[] values, int window) {
-        // TODO 6: allocate with new double[size], fill it with a nested loop, then return it
-        return new double[0];
+        // 6: allocate with new double[size], fill it with a nested loop, then return it
+        int size = values.length  - window + 1;
+        double[] movingAverage = new double[size];
+        for (int i = 0; i < size; i++){
+            double sum = 0;
+            for (int j = 0; j < window; j++){
+                sum += values[i+j];
+            }
+            movingAverage[i] = sum / window;
+        }
+        return movingAverage;
     }
 
     /**
@@ -63,8 +108,13 @@ public class WeatherStats {
      * Returns the average of each row. readings[i] is itself a double[], so you can reuse average()!
      */
     static double[] dailyAverages(double[][] readings) {
-        // TODO 7
-        return new double[0];
+        // 7
+        int size = readings.length;
+        double[] dailyAverages = new double[size];
+        for (int i = 0; i < size; i++){
+            dailyAverages[i] = average(readings[i]);
+        }
+        return dailyAverages;
     }
 
     /**
@@ -72,7 +122,13 @@ public class WeatherStats {
      * Compare with Exercise 4's tryToDouble. Why does THIS change stick for the caller?
      */
     static void reverseInPlace(double[] values) {
-        // TODO 8: swap values[i] and values[j], moving i forwards and j backwards until they meet
+        // 8: swap values[i] and values[j], moving i forwards and j backwards until they meet
+        for (int i = 0; i < values.length / 2; i++){
+            int j = values.length - 1 -i;
+            double temp = values[i];
+            values[i] = values[j];
+            values[j] = temp;
+        }
     }
 
     // ---------------------------------------------------------------
@@ -103,20 +159,20 @@ public class WeatherStats {
         double[] copy = week;                                   // copies the reference, not the data
         double[] clone = Arrays.copyOf(week, week.length);      // copies the data
         copy[0] = 99.9;
-        System.out.println("week[0] = " + week[0]);                                  // prediction:
-        System.out.println("clone[0] = " + clone[0]);                                // prediction:
-        System.out.println("week == copy: " + (week == copy));                       // prediction:
-        System.out.println("week == clone: " + (week == clone));                     // prediction:
+        System.out.println("week[0] = " + week[0]);                                  // prediction: 99.9
+        System.out.println("clone[0] = " + clone[0]);                                // prediction: 12.5
+        System.out.println("week == copy: " + (week == copy));                       // prediction: true
+        System.out.println("week == clone: " + (week == clone));                     // prediction: false
         clone[0] = 99.9;
-        System.out.println("Arrays.equals(week, clone): " + Arrays.equals(week, clone)); // prediction:
-        System.out.println("printing week directly: " + week);                       // prediction:
+        System.out.println("Arrays.equals(week, clone): " + Arrays.equals(week, clone)); // prediction: true
+        System.out.println("printing week directly: " + week);                       // prediction: gibberish
         System.out.println("Arrays.toString(week): " + Arrays.toString(week));
         boolean[] flags = new boolean[3];
         String[] names = new String[2];
-        System.out.println("default boolean[]: " + Arrays.toString(flags));          // prediction:
-        System.out.println("default String[]: " + Arrays.toString(names));           // prediction:
+        System.out.println("default boolean[]: " + Arrays.toString(flags));          // prediction: 3x false
+        System.out.println("default String[]: " + Arrays.toString(names));           // prediction: 2x null?
 
-        // TODO 9 (optional): uncomment the next line, run it, and read the exception message.
+        //  9 (optional): uncomment the next line, run it, and read the exception message.
         // System.out.println(week[7]);
     }
 
