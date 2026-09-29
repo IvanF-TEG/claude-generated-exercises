@@ -61,9 +61,9 @@ Box too small
 ```
 
 ## Definition of Done
-- [ ] 16/16 PASS and the printed output matches
-- [ ] Written note: why is `score` still `21` after `tryToDouble(score)`?
-- [ ] Written note: why is `a / gcd(a, b) * b` safer than `a * b / gcd(a, b)`? (Try `lcm(50000, 60000)` both ways. One gives `300000`, the other `-129496`.)
-- [ ] Try writing a third overload, `int power(int base, int exp)`. Which test now fails, and why? Then delete it again.
+- [X] 16/16 PASS and the printed output matches
+- [X] Written note: why is `score` still `21` after `tryToDouble(score)`?
+- [X] Written note: why is `a / gcd(a, b) * b` safer than `a * b / gcd(a, b)`? (Try `lcm(50000, 60000)` both ways. One gives `300000`, the other `-129496`.)
+- [X] Try writing a third overload, `int power(int base, int exp)`. Which test now fails, and why? Then delete it again.
 
 Stuck? See [HINTS.md](HINTS.md).
