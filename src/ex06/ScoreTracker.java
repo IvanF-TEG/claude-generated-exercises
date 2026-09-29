@@ -20,20 +20,36 @@ public class ScoreTracker {
 
     /** Copies the raw array into a new ArrayList, SKIPPING negative (invalid) values. */
     static ArrayList<Integer> parseScores(int[] raw) {
-        // TODO 1
-        return new ArrayList<>();
+        //  1
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int val : raw){
+            if (val >= 0){
+            list.add(val);
+            }
+        }
+        return list;
     }
 
     /** Total of all the scores. Try an enhanced for loop with an int loop variable: unboxing happens automatically. */
     static int sum(ArrayList<Integer> scores) {
-        // TODO 2
-        return -1;
+        // 2
+        int sum = 0;
+        for (int val : scores){
+            sum += val;
+        }
+        return sum;
     }
 
     /** Returns a NEW list containing only scores >= threshold. Must NOT modify the input list. */
     static ArrayList<Integer> removeBelow(ArrayList<Integer> scores, int threshold) {
-        // TODO 3
-        return new ArrayList<>();
+        // 3
+        ArrayList<Integer> removeBelow = new ArrayList<Integer>();
+        for (int val : scores){
+            if (val >= threshold){
+                removeBelow.add(val);
+            }
+        }
+        return removeBelow;
     }
 
     /**
@@ -46,7 +62,13 @@ public class ScoreTracker {
      * Suggested approach: loop BACKWARDS by index.
      */
     static void removeAllOccurrences(ArrayList<Integer> scores, int value) {
-        // TODO 4
+        // 4
+        int size = scores.size();
+        for (int i = size - 1; i > -1; i--){
+            if (scores.get(i) == value){
+                scores.remove(i);
+            }
+        }
     }
 
     /**
@@ -55,14 +77,34 @@ public class ScoreTracker {
      * Tools: new ArrayList<>(existingList) makes a copy; Collections.sort(list); Collections.reverse(list).
      */
     static ArrayList<Integer> topN(ArrayList<Integer> scores, int n) {
-        // TODO 5
-        return new ArrayList<>();
+        // 5
+        ArrayList<Integer> copy = new ArrayList<>(scores);
+        Collections.sort(copy);
+        Collections.reverse(copy);
+        int i = n;
+        while (i < scores.size()){
+            copy.remove(n);
+            i++;
+        }
+        return copy;
     }
 
     /** All the names from a, then any names from b not already included. Keep first-seen order and skip duplicates. */
     static ArrayList<String> mergeUnique(ArrayList<String> a, ArrayList<String> b) {
-        // TODO 6
-        return new ArrayList<>();
+        // 6
+        ArrayList<String> copy = new ArrayList<>(a);
+        for (String nameB : b){
+            boolean duplicate = false;
+            for (String nameA : a){
+                if (nameA.equals(nameB)){
+                    duplicate = true;
+                }
+            }
+            if (!duplicate){
+                copy.add(nameB);
+            }
+        }
+        return copy;
     }
 
     // ---------------------------------------------------------------
@@ -100,9 +142,10 @@ public class ScoreTracker {
         System.out.println("--- Integer caching gotcha ---");
         Integer x = 127, y = 127;
         Integer p = 128, q = 128;
-        System.out.println("127 == 127 (Integer): " + (x == y));   // prediction:
-        System.out.println("128 == 128 (Integer): " + (p == q));   // prediction:
-        System.out.println("128 equals 128: " + p.equals(q));      // prediction:
+        System.out.println("127 == 127 (Integer): " + (x == y));   // prediction: true
+        System.out.println("128 == 128 (Integer): " + (p == q));   // prediction: false,
+        // because == compares references, and Java only caches Integer objects for −128 to 127
+        System.out.println("128 equals 128: " + p.equals(q));      // prediction: true
     }
 
     static void check(String label, int actual, int expected) {
