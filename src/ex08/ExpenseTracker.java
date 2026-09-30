@@ -1,6 +1,7 @@
 package ex08;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -35,11 +36,23 @@ public class ExpenseTracker {
         Locale.setDefault(Locale.UK);
         Scanner in = new Scanner(System.in);
 
-        // TODO 1: a DO-WHILE loop (the menu must show at least once):
+        // 1: a DO-WHILE loop (the menu must show at least once):
         //   - print MENU
         //   - choice = readIntInRange(in, "Choose an option: ", 1, 4)
         //   - use a switch to call addExpense(in) / listExpenses() / showSummary(), or print "Goodbye!" for 4
         //   - keep looping while choice != 4
+        int choice = -1;
+        do {
+            System.out.println(MENU);
+            choice = readIntInRange(in, "Choose an option: ", 1, 4);
+            switch (choice) {
+                case 1 -> addExpense(in);
+                case 2 -> listExpenses();
+                case 3 -> showSummary();
+                case 4 -> System.out.println("Goodbye!");
+            }
+        } while (choice != 4);
+
 
         in.close();
     }
@@ -52,8 +65,22 @@ public class ExpenseTracker {
      * IMPORTANT: after nextInt(), call in.nextLine() to throw away the rest of the line.
      */
     static int readIntInRange(Scanner in, String prompt, int min, int max) {
-        // TODO 2: while (true) { ... } with hasNextInt()
-        return min;
+        // 2: while (true) { ... } with hasNextInt()
+        System.out.print(prompt);
+        int input = -1;
+        while (true) {
+            if (in.hasNextInt()){
+                input = in.nextInt();
+                in.nextLine();
+                if (input <= max && min <= input){
+                    break;
+                }
+            }
+            in.nextLine();
+            System.out.println("Please enter a whole number from " + min + " to " + max);
+
+        }
+        return input;
     }
 
     /**
@@ -61,8 +88,21 @@ public class ExpenseTracker {
      * After each bad attempt, print: "Please enter a positive amount, e.g. 4.50"
      */
     static double readPositiveDouble(Scanner in, String prompt) {
-        // TODO 3
-        return 0;
+        // 3
+        System.out.print(prompt);
+        double input = -1;
+        while (true){
+            if (in.hasNextDouble()){
+                input = in.nextDouble();
+                in.nextLine();
+                if (input > 0){
+                    break;
+                }
+            }
+            in.nextLine();
+            System.out.println("Please enter a positive amount, e.g. 4.50");
+        }
+        return input;
     }
 
     /**
@@ -70,8 +110,19 @@ public class ExpenseTracker {
      * If the line is empty after trimming, print "Description cannot be empty." and ask again.
      */
     static String readNonEmptyLine(Scanner in, String prompt) {
-        // TODO 4
-        return "";
+        //  4
+        System.out.print(prompt);
+        String input = "";
+        while (true){
+            if (in.hasNextLine()){
+                input = in.nextLine().trim();
+                if (!input.isEmpty()){
+                    break;
+                }
+                System.out.println("Description cannot be empty.");
+            }
+        }
+        return input;
     }
 
     /**
@@ -79,7 +130,12 @@ public class ExpenseTracker {
      *   Added: Coffee beans (£12.50)
      */
     static void addExpense(Scanner in) {
-        // TODO 5
+        // 5
+        String desc = readNonEmptyLine(in, "Description: ");
+        double amount = readPositiveDouble(in, "Amount (£): ");
+        descriptions.add(desc);
+        amounts.add(amount);
+        System.out.printf("%s%s %s%.2f\n", "Description: ", desc, "Amount (£): ", amount);
     }
 
     /**
@@ -87,7 +143,15 @@ public class ExpenseTracker {
      * or "No expenses yet." if the list is empty.
      */
     static void listExpenses() {
-        // TODO 6
+        // 6
+        if (descriptions.size() == 0){
+            System.out.println("No expenses yet.");
+            return;
+        }
+        for (int i = 0; i < descriptions.size(); i++){
+            System.out.printf("%d. %s - £%.2f\n", i + 1, descriptions.get(i), amounts.get(i));
+        }
+
     }
 
     /**
@@ -99,6 +163,27 @@ public class ExpenseTracker {
      * Use printf with %.2f for money.
      */
     static void showSummary() {
-        // TODO 7
+        //  7
+        int size = descriptions.size();
+        if (size == 0){
+            System.out.println("No expenses yet");
+            return;
+        }
+        double total = 0;
+        for (double amount : amounts){
+            total += amount;
+        }
+        double maxAmount = -1;
+        int maxAmountIndex = 0;
+        for (int i = 0; i < size; i++){
+            if (maxAmount < amounts.get(i)){
+                maxAmount = amounts.get(i);
+                maxAmountIndex = i;
+            }
+        }
+        System.out.println("Expenses: " + size);
+        System.out.printf("%-19s£%.2f\n", "Total:", total);
+        System.out.printf("%-19s£%.2f\n", "Average:", total / size);
+        System.out.printf("%-19s%s(£%.2f)\n", "Largest:", descriptions.get(maxAmountIndex), maxAmount);
     }
 }
