@@ -233,10 +233,14 @@ class PricingRulesTest {
 
         @Test
         void ruleOrderChangesThePrice() {
-            // TODO 6: build two engines with the SAME rules in a DIFFERENT order, and prove that they give
+            // 6: build two engines with the SAME rules in a DIFFERENT order, and prove that they give
             // different prices for the same quote. Work out the expected pence by hand first, and assert
             // both exact values, not just "they're different". Then delete the fail(...) line.
-            fail("TODO 6: write this test");
+            QuoteEngine engine1 = new QuoteEngine((List.of(new HeavyLoadSurcharge(1000), new FuelSurcharge(1000))));
+            QuoteEngine engine2 = new QuoteEngine((List.of(new FuelSurcharge(1000), new HeavyLoadSurcharge(1000))));
+            Quote just1001 = new Quote(10_000, 1001, 10, DayOfWeek.MONDAY, false, false);
+            assertEquals(22_000, engine1.priceFor(just1001));
+            assertEquals(24_000, engine2.priceFor(just1001));
         }
     }
 }

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -180,15 +181,29 @@ class LoadValidatorTest {
     class YourTests {
 
         @Test
-        void commentLineWithLeadingSpacesIsSkipped() {
-            // TODO 7a: prove that "   # indented comment" is skipped by parseManifest. Then delete the fail(...) line.
-            fail("TODO 7a: write this test");
+        void commentLineWithLeadingSpacesIsSkipped() throws Exception {
+            // 7a: prove that "   # indented comment" is skipped by parseManifest. Then delete the fail(...) line.
+            List<String> lines = List.of("   # indented comment");
+            assertEquals(List.of(), LoadValidator.parseManifest(lines));
         }
 
         @Test
         void validateAllNeverAddsAWeightErrorWhenUnderTheLimit() {
-            // TODO 7b: choose your own input. Assert on BOTH getValidItems() and getErrors().
-            fail("TODO 7b: write this test");
+            //  7b: choose your own input. Assert on BOTH getValidItems() and getErrors().
+            List<String> lines = List.of(
+                    "# Friday",
+                    "A,Crate,600",
+                    ",Crate,10",
+                    "B,Crate,heavy",
+                    "C,Crate,500",
+                    "D,Crate");
+            ValidationReport report = LoadValidator.validateAll(lines, 1100);
+            assertEquals(List.of(new Item("A", "Crate", 600), new Item("C", "Crate", 500)), report.getValidItems());
+            assertEquals(List.of(
+                    "line 3: missing id",
+                    "line 4: weight is not a number: 'heavy'",
+                    "line 6: expected 3 fields but found 2"
+                    ), report.getErrors());
         }
     }
 }

@@ -16,20 +16,33 @@ public interface PricingRule {
     long adjustmentPence(Quote quote, long runningPence);
 
     /**
-     * TODO 1a: a DEFAULT method, meaning every implementing class gets this for free.
+     * 1a: a DEFAULT method, meaning every implementing class gets this for free.
      * Returns name + ": " + the signed adjustment, formatted with Money.format:
      *   "Fuel surcharge: +£6.00"    "Loyalty discount: -£16.12"    zero counts as "+£0.00"
      */
     default String describe(Quote quote, long runningPence) {
-        return "";
+        long adjustmentPence = adjustmentPence(quote, runningPence);
+        if (adjustmentPence < 0){
+            return name() + ": " + Money.format(adjustmentPence); }
+        return name() + ": +" + Money.format(adjustmentPence(quote, runningPence));
     }
 
     /**
-     * TODO 1b: a STATIC factory method. Return an ANONYMOUS CLASS (new PricingRule() { ... })
+     *  1b: a STATIC factory method. Return an ANONYMOUS CLASS (new PricingRule() { ... })
      * whose adjustment is always 'pence', whatever the quote.
      *   PricingRule.flatFee("Booking fee", 250).describe(q, 0) -> "Booking fee: +£2.50"
      */
     static PricingRule flatFee(String name, long pence) {
-        return null;
+        return new PricingRule() {
+            @Override
+            public String name() {
+                return name;
+            }
+
+            @Override
+            public long adjustmentPence(Quote quote, long runningPence) {
+                return pence;
+            }
+        };
     }
 }

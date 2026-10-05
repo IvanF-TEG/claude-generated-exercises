@@ -13,11 +13,28 @@ package ex12;
  */
 public class Truck extends Vehicle {
 
-    public Truck(String registration, int maxPayloadKg, int pencePerKm, int axles) {
-        super("TODO", 1, 0);
+    protected final int axles;
+
+    public Truck(String registration, int maxPayloadKg, int pencePerKm, int axles) throws IllegalArgumentException {
+        super(registration, maxPayloadKg, pencePerKm);
+        if (axles < 2 || axles > 6){
+            throw new IllegalArgumentException("axles must be 2 to 6: " + axles);
+        }
+        this.axles = axles;
     }
 
     public int getAxles() {
-        return 0;
+        return axles;
     }
+
+    @Override
+    public String kind() { return "Truck"; }
+
+    @Override
+    public String describe() {return super.describe() + ", " + getAxles() + " axles";}
+
+    @Override
+    public long costFor(int km){ return super.costFor(km) + 3L * km * axles; }
+
+
 }

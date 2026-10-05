@@ -29,8 +29,28 @@ public class LoadValidator {
      * Example: parseLine("  PLT-001 , Pallet of tiles , 450 ", 1) -> Item("PLT-001", "Pallet of tiles", 450)
      */
     public static Item parseLine(String line, int lineNumber) throws ManifestParseException {
-        // TODO 2
-        return null;
+        // 2
+        String[] splitLine = line.split(",");
+        ArrayList<String> fieldsArray = new ArrayList<>();
+        for (String field : splitLine){
+            fieldsArray.add(field.trim());
+        }
+        String[] fields = fieldsArray.toArray(new String[0]);
+        if (fields.length != 3){
+            throw new ManifestParseException(lineNumber, "expected 3 fields but found " + fields.length);
+        }
+        if (fields[0].isEmpty()){
+            throw new ManifestParseException(lineNumber, "missing id");
+        }
+        try {
+            int weight = Integer.parseInt(fields[2]);
+            if (weight <= 0){
+                throw new ManifestParseException(lineNumber, "weight must be positive: " + weight);
+            }
+            return new Item(fields[0], fields[1], weight);
+        } catch (NumberFormatException e) {
+            throw new ManifestParseException(lineNumber, "weight is not a number: '" + fields[2] + "'", e);
+        }
     }
 
     /**
@@ -38,15 +58,30 @@ public class LoadValidator {
      * (after trimming). The first bad line stops everything: its exception propagates to the caller.
      */
     public static List<Item> parseManifest(List<String> lines) throws ManifestParseException {
-        // TODO 3
-        return new ArrayList<>();
+        // 3
+        List<Item> parseManifest = new ArrayList<>();
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i).trim();
+            if (line.isBlank() || line.charAt(0) == '#') {
+                continue;
+            }
+            parseManifest.add(parseLine(line, i + 1));
+        }
+        return parseManifest;
     }
 
     /**
      * Throws OverweightException if the total weight of the items is MORE than maxKg (exactly maxKg is fine).
      */
     public static void checkWeight(List<Item> items, int maxKg) throws OverweightException {
-        // TODO 4
+        // 4
+        int totalKg = 0;
+        for (Item item : items){
+            totalKg += item.getWeightKg();
+        }
+        if (totalKg > maxKg){
+            throw new OverweightException(totalKg, maxKg);
+        }
     }
 
     /**
@@ -58,8 +93,26 @@ public class LoadValidator {
      * Reuse parseLine and checkWeight. Don't copy their logic.
      */
     public static ValidationReport validateAll(List<String> lines, int maxKg) {
-        // TODO 5
-        return new ValidationReport(new ArrayList<>(), new ArrayList<>());
+        //  5
+        ArrayList<Item> validItems = new ArrayList<>();
+        ArrayList<String> errors = new ArrayList<>();
+        for (int i = 0; i < lines.size(); i++){
+            String line = lines.get(i);
+            if (line.isBlank() || line.charAt(0) == '#'){
+                continue;
+            }
+            try {
+                validItems.add(parseLine(line, i + 1));
+            } catch (ManifestParseException e) {
+                errors.add(e.getMessage());
+            }
+        }
+        try {
+            checkWeight(validItems, maxKg);
+        } catch (OverweightException e) {
+            errors.add(e.getMessage());
+        }
+        return new ValidationReport(validItems, errors);
     }
 
     /**
@@ -72,7 +125,16 @@ public class LoadValidator {
      * comes before or after "summary: ...".
      */
     public static int loadAll(String bayName, int capacityKg, List<Item> items, List<String> log) {
-        // TODO 6
-        return 0;
+        //  6
+        int loadCount = 0;
+        try (LoadingBay bay = new LoadingBay(bayName, capacityKg, log)){
+            for (Item item : items){
+                bay.load(item);
+                loadCount++;
+            }
+        } finally {
+            log.add("summary: loaded " + loadCount + " item(s)");
+        }
+        return loadCount;
     }
 }

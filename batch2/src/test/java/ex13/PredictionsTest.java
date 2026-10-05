@@ -10,22 +10,22 @@ class PredictionsTest {
 
     @Test
     void bothDefaults() {
-        assertEquals("???", Predictions.bothDefaults());
+        assertEquals("tracked+insured", Predictions.bothDefaults());
     }
 
     @Test
     void classBeatsInterfaceDefault() {
-        assertEquals("???", Predictions.classBeatsInterfaceDefault());
+        assertEquals("basic", Predictions.classBeatsInterfaceDefault());
     }
 
     @Test
     void anonymousClassName() {
-        assertEquals("???", Predictions.anonymousClassName());
+        assertEquals("[]", Predictions.anonymousClassName());
     }
 
     @Test
     void variableTypeDoesNotLimitTheObject() {
         // replace the "???" with true or false (no quotes)
-        assertEquals("???", Predictions.variableTypeDoesNotLimitTheObject());
+        assertEquals(true, Predictions.variableTypeDoesNotLimitTheObject());
     }
 }

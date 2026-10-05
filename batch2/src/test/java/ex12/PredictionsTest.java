@@ -10,27 +10,27 @@ class PredictionsTest {
 
     @Test
     void overloadingUsesTheDeclaredType() {
-        assertEquals("???", Predictions.overloadingUsesTheDeclaredType());
+        assertEquals("handle parcel", Predictions.overloadingUsesTheDeclaredType());
     }
 
     @Test
     void overridingUsesTheRealObject() {
-        assertEquals("???", Predictions.overridingUsesTheRealObject());
+        assertEquals("fragile", Predictions.overridingUsesTheRealObject());
     }
 
     @Test
     void fieldsAreNotPolymorphic() {
-        assertEquals("???", Predictions.fieldsAreNotPolymorphic());
+        assertEquals("parcel", Predictions.fieldsAreNotPolymorphic());
     }
 
     @Test
     void staticMethodsAreNotPolymorphic() {
-        assertEquals("???", Predictions.staticMethodsAreNotPolymorphic());
+        assertEquals("general", Predictions.staticMethodsAreNotPolymorphic());
     }
 
     @Test
     void constructorCallsOverriddenMethod() {
         // The hardest one. Think about the ORDER in which Base() and Child's field initialiser run.
-        assertEquals("???", Predictions.constructorCallsOverriddenMethod());
+        assertEquals("child null", Predictions.constructorCallsOverriddenMethod());
     }
 }

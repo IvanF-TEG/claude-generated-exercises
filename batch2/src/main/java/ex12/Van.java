@@ -3,7 +3,7 @@ package ex12;
 /**
  * A van. Refrigerated vans cost 25% more per journey to run.
  *
- * TODO 2:
+ * 2:
  *   - Pass the real values up to Vehicle's constructor (replace the placeholder super call) and store 'refrigerated'.
  *   - Override kind() so describe() starts with "Van".
  *   - Override describe(): a refrigerated van appends ", refrigerated":
@@ -15,13 +15,28 @@ package ex12;
  */
 public class Van extends Vehicle {
 
+    protected final boolean refrigerated;
+
     public Van(String registration, int maxPayloadKg, int pencePerKm, boolean refrigerated) {
         // The FIRST statement of a subclass constructor must call super(...). Vehicle has no
         // no-argument constructor, so the compiler insists. This placeholder just keeps it compiling.
-        super("TODO", 1, 0);
+        super(registration, maxPayloadKg, pencePerKm);
+        this.refrigerated = refrigerated;
     }
 
     public boolean isRefrigerated() {
-        return false;
+        return refrigerated;
+    }
+
+    @Override
+    public String kind(){ return "Van"; }
+
+    @Override
+    public String describe() { return super.describe() + ((isRefrigerated()) ? ", refrigerated" : ""); }
+
+    @Override
+    public long costFor(int km) {
+        if (isRefrigerated()) { return super.costFor(km) * 125 / 100; }
+        return super.costFor(km);
     }
 }

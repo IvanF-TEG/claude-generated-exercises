@@ -3,7 +3,7 @@ package ex12;
 /**
  * A Heavy Goods Vehicle: a Truck with extra rules. That makes it a Vehicle too (Hgv -> Truck -> Vehicle).
  *
- * TODO 4:
+ * 4:
  *   - Constructor: an HGV needs at least 3 axles -> IllegalArgumentException("an HGV needs at least 3 axles").
  *     (Truck's own 2-to-6 rule still applies too, for free.)
  *   - kind() -> "HGV"
@@ -14,7 +14,19 @@ package ex12;
  */
 public class Hgv extends Truck {
 
-    public Hgv(String registration, int maxPayloadKg, int pencePerKm, int axles) {
-        super("TODO", 1, 0, 2);
+    public Hgv(String registration, int maxPayloadKg, int pencePerKm, int axles) throws IllegalArgumentException {
+        super(registration, maxPayloadKg, pencePerKm, axles);
+        if (axles < 3) {
+            throw new IllegalArgumentException("an HGV needs at least 3 axles");
+        }
     }
+
+    @Override
+    public String kind() { return "HGV"; }
+
+    @Override
+    public boolean canCarry(int kg) { return (super.canCarry(kg) && (kg >= 3000)); }
+
+    @Override
+    public long costFor(int km) { return super.costFor(km) + 5000; }
 }

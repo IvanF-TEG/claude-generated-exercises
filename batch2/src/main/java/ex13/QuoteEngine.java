@@ -7,19 +7,24 @@ import java.util.List;
 // You can add a new kind of rule next year without changing a single line of this class.
 public class QuoteEngine {
 
+    private final List<PricingRule> rules;
+
     /**
      * TODO 5: store a COPY of the rules, so that if the caller changes their list afterwards,
      * this engine isn't affected.
      */
-    public QuoteEngine(List<PricingRule> rules) {
-    }
+    public QuoteEngine(List<PricingRule> rules) { this.rules = new ArrayList<>(rules); }
 
     /**
      * Starts at the base price, then applies every rule IN ORDER, each one seeing the running total
      * so far. The final price is never below zero.
      */
     public long priceFor(Quote quote) {
-        return 0;
+        long priceFor = quote.getBasePence();
+        for (PricingRule rule : rules){
+            priceFor += rule.adjustmentPence(quote, priceFor);
+        }
+        return priceFor > 0 ? priceFor : 0;
     }
 
     /**
@@ -28,11 +33,30 @@ public class QuoteEngine {
      * Use each rule's describe(...). The Total line uses the same value as priceFor.
      */
     public List<String> breakdown(Quote quote) {
-        return new ArrayList<>();
+        List<String> breakdown = new ArrayList<>();
+        breakdown.add("Base: " + Money.format(quote.getBasePence()));
+        long runningPrice = quote.getBasePence();
+        for (PricingRule rule : rules){
+            long adjustmentPence = rule.adjustmentPence(quote, runningPrice);
+            if (adjustmentPence == 0){
+                continue;
+            }
+            breakdown.add(rule.describe(quote, runningPrice));
+            runningPrice += adjustmentPence;
+        }
+        long priceFor = priceFor(quote);
+        breakdown.add("Total: " + Money.format(priceFor));
+        return breakdown;
     }
 
     /** The audit codes of every rule that is Auditable, in rule order. */
     public List<String> auditCodes() {
-        return new ArrayList<>();
+        List<String> auditCodes = new ArrayList<>();
+        for (PricingRule rule : rules){
+            if (rule instanceof Auditable auditable){
+                auditCodes.add(auditable.auditCode());
+            }
+        }
+        return auditCodes;
     }
 }

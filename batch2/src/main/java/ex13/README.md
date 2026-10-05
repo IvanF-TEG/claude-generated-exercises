@@ -16,8 +16,8 @@ Build a quoting engine that works out a delivery price by running a list of **pr
 | Multiple inheritance: `class C(A, B):` | `class C extends OneClass implements A, B`: **one** class, but **any number** of interfaces |
 | `lambda` / a one-off inner class | an anonymous class, `new PricingRule() { ... }` (lambdas replace many of these in Ex 16) |
 
-**Interface or abstract class?**
-| | Interface | Abstract class |
+## Interface or abstract class?
+|  | Interface | Abstract class |
 |---|---|---|
 | Fields (state) | Constants only (`public static final`) | Any fields |
 | Constructors | None | Yes (called via `super(...)`) |

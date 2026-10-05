@@ -10,32 +10,32 @@ class PredictionsTest {
 
     @Test
     void putReturnsThePreviousValue() {
-        assertEquals("???", Predictions.putReturnsThePreviousValue());
+        assertEquals("null 3 5", Predictions.putReturnsThePreviousValue());
     }
 
     @Test
     void missingKeys() {
-        assertEquals("???", Predictions.missingKeys());
+        assertEquals("null 0", Predictions.missingKeys());
     }
 
     @Test
     void unboxingAMissingValue() {
-        assertEquals("???", Predictions.unboxingAMissingValue());
+        assertEquals("NullPointerException", Predictions.unboxingAMissingValue());
     }
 
     @Test
     void mergeReturningNullRemovesTheKey() {
-        assertEquals("???", Predictions.mergeReturningNullRemovesTheKey());
+        assertEquals("false 0", Predictions.mergeReturningNullRemovesTheKey());
     }
 
     @Test
     void mutatedKeyGetsLost() {
         // Think about WHERE HashMap looks for a key: it uses hashCode() first, and only then equals().
-        assertEquals("???", Predictions.mutatedKeyGetsLost());
+        assertEquals("false false 1", Predictions.mutatedKeyGetsLost());
     }
 
     @Test
     void linkedHashMapRePutKeepsItsPlace() {
-        assertEquals("???", Predictions.linkedHashMapRePutKeepsItsPlace());
+        assertEquals("[a, b, c] [99, 2, 3]", Predictions.linkedHashMapRePutKeepsItsPlace());
     }
 }

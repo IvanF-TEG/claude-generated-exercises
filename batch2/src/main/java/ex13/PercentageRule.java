@@ -1,7 +1,7 @@
 package ex13;
 
 /**
- * TODO 2: an ABSTRACT class for every rule of the form "if <condition>, add <percent>% of the running price".
+ * 2: an ABSTRACT class for every rule of the form "if <condition>, add <percent>% of the running price".
  *
  * This is the TEMPLATE METHOD pattern: the fixed algorithm lives here (adjustmentPence, which is final so
  * no subclass can change it), and each subclass fills in only the part that varies: appliesTo(quote).
@@ -13,7 +13,15 @@ package ex13;
  */
 public abstract class PercentageRule implements PricingRule {
 
-    protected PercentageRule(String name, int percent) {
+    private final String name;
+    private  final int percent;
+
+    protected PercentageRule(String name, int percent) throws IllegalArgumentException {
+        if (percent < -100 || percent > 100){
+            throw new IllegalArgumentException("percent must be between -100 and 100: " + percent);
+        }
+        this.name = name;
+        this.percent = percent;
     }
 
     /** The one thing each subclass must decide. */
@@ -21,15 +29,15 @@ public abstract class PercentageRule implements PricingRule {
 
     @Override
     public final String name() {
-        return null;
+        return name;
     }
 
     public int getPercent() {
-        return 0;
+        return percent;
     }
 
     @Override
     public final long adjustmentPence(Quote quote, long runningPence) {
-        return 0;
+        return appliesTo(quote) ? runningPence * percent / 100 : 0;
     }
 }

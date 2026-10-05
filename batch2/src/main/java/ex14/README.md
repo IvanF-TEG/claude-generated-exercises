@@ -22,7 +22,7 @@ Summarise a day's deliveries by driver and by postcode area, using maps for fast
 
 **`Integer::sum`** is a *method reference*, shorthand for `(a, b) -> a + b`. Lambdas and method references get a whole exercise (Ex 16). For now, read `merge(k, 1, Integer::sum)` as "put 1, or add 1 to what's there".
 
-**Which Map?**
+## **Which Map?**
 | Implementation | Order when you iterate | `get`/`put` speed | Use when |
 |---|---|---|---|
 | `HashMap` | Unpredictable (it can even change as the map grows) | O(1) | You only look things up |
