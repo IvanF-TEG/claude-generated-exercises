@@ -1,0 +1,43 @@
+--- Expense Tracker ---
+1) Add expense
+2) List expenses
+3) Show summary
+4) Quit
+Choose an option: No expenses yet
+--- Expense Tracker ---
+1) Add expense
+2) List expenses
+3) Show summary
+4) Quit
+Choose an option: Description: Amount (£): Description: Coffee beans Amount (£): 12.50
+--- Expense Tracker ---
+1) Add expense
+2) List expenses
+3) Show summary
+4) Quit
+Choose an option: Description: Description cannot be empty.
+Amount (£): Please enter a positive amount, e.g. 4.50
+Description: Train ticket to Leeds Amount (£): 23.10
+--- Expense Tracker ---
+1) Add expense
+2) List expenses
+3) Show summary
+4) Quit
+Choose an option: 1. Coffee beans - £12.50
+2. Train ticket to Leeds - £23.10
+--- Expense Tracker ---
+1) Add expense
+2) List expenses
+3) Show summary
+4) Quit
+Choose an option: Please enter a whole number from 1to 4 
+Expenses: 2
+Total:             £35.60
+Average:           £17.80
+Largest:           Train ticket to Leeds(£23.10)
+--- Expense Tracker ---
+1) Add expense
+2) List expenses
+3) Show summary
+4) Quit
+Choose an option: Goodbye!

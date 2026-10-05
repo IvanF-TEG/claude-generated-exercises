@@ -1,0 +1,10 @@
+# GIVEN. A local PostgreSQL for the "postgres" profile:  docker compose up -d   (stop it with: docker compose down)
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: freightboard
+      POSTGRES_USER: freightboard
+      POSTGRES_PASSWORD: local-dev-only
+    ports:
+      - "5432:5432"

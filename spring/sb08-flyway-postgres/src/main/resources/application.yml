@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: freightboard
+  # No datasource URL: Boot starts an in-memory H2 database with a random name. The start-up log shows it:
+  #   "H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:...'"   (user "sa", no password)
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      # SB08: Hibernate no longer creates the tables. Flyway does, from db/migration. Hibernate only CHECKS that the
+      # tables match the entities, and refuses to start if they don't.
+      ddl-auto: validate
+    # Don't keep a database session open while the JSON is being written. Recommended; the default is true.
+    open-in-view: false
+
+# SB03 step 1c: the default pricing values. Property names are kebab-case: they bind to camelCase record components.
+#   freightboard.pricing.distance:    base-fee-pence 2500, pence-per-km 95, free-weight-kg 1000, pence-per-extra-kg 3
+#   freightboard.pricing.weight-band: minimum-pence 4000, heavy-pence-per-km 160, and a LIST of bands:
+#                                     {max-kg 1000, pence-per-km 60} then {max-kg 18000, pence-per-km 110}
+freightboard:
+  pricing:
+    distance:
+      base-fee-pence: 2500
+      pence-per-km: 95
+      free-weight-kg: 1000
+      pence-per-extra-kg: 3
+    weight-band:
+      minimum-pence: 4000
+      heavy-pence-per-km: 160
+      bands:
+        - max-kg: 1000
+          pence-per-km: 60
+        - max-kg: 18000
+          pence-per-km: 110

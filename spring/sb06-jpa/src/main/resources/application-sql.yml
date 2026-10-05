@@ -1,0 +1,7 @@
+# GIVEN. Run with the "sql" profile to print every SQL statement Hibernate sends to the database.
+spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true

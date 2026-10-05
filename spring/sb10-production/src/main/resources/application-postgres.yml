@@ -1,0 +1,7 @@
+# GIVEN. Run against a real PostgreSQL: start one with `docker compose up -d` (see compose.yaml), then use the
+# "postgres" profile. The password comes from an environment variable. Never commit a real one.
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/freightboard
+    username: freightboard
+    password: ${FREIGHTBOARD_DB_PASSWORD:local-dev-only}

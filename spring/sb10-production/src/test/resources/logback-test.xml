@@ -1,0 +1,9 @@
+<!-- Keeps test output readable: only warnings and errors, except FreightBoard's own INFO lines (SB10 tests them). -->
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <logger name="com.freightboard" level="INFO"/>
+    <root level="WARN">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>

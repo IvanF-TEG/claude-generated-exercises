@@ -1,0 +1,9 @@
+# Loaded ON TOP of application.yml when the "prod" profile is active. Only list what's DIFFERENT.
+# SB03 step 4: in prod, the distance base fee is 3000 and the rate is 110 pence per km. The promo discount is 5%.
+freightboard:
+  pricing:
+    distance:
+      base-fee-pence: 3000
+      pence-per-km: 110
+  promo:
+    discount-percent: 5

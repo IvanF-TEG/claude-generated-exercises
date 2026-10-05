@@ -1,0 +1,2 @@
+# Loaded ON TOP of application.yml when the "prod" profile is active. Only list what's DIFFERENT.
+# TODO 4: in prod, the distance base fee is 3000 and the rate is 110 pence per km. The promo discount is 5%.

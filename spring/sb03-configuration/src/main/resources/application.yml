@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: freightboard
+
+# TODO 1c: the default pricing values. Property names are kebab-case: they bind to camelCase record components.
+#   freightboard.pricing.distance:    base-fee-pence 2500, pence-per-km 95, free-weight-kg 1000, pence-per-extra-kg 3
+#   freightboard.pricing.weight-band: minimum-pence 4000, heavy-pence-per-km 160, and a LIST of bands:
+#                                     {max-kg 1000, pence-per-km 60} then {max-kg 18000, pence-per-km 110}

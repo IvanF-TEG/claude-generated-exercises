@@ -15,15 +15,21 @@ public class BankAccount {
     // 'static'  = ONE copy shared by the whole class, not one per object.
     // ---------------------------------------------------------------
 
-    // TODO 1: declare two private static int fields:
+    // 1: declare two private static int fields:
     //   nextAccountNumber, starting at 1001 (the number the NEXT new account will receive)
     //   accountsCreated, starting at 0
+    private static int nextAccountNumber = 1001;
+    private static int accountsCreated = 0;
 
-    // TODO 2: declare the instance fields:
+    // 2: declare the instance fields:
     //   private final int accountNumber;
     //   private final String ownerName;
     //   private long balancePence;                              (NOT final: it changes)
     //   private final ArrayList<String> history = new ArrayList<>();
+    private final int accountNumber;
+    private final String ownerName;
+    private long balancePence;
+    private final ArrayList<String> history = new ArrayList<>();
 
 
     // ---------------------------------------------------------------
@@ -40,12 +46,22 @@ public class BankAccount {
      * Use 'this.ownerName = ownerName;' where the parameter has the same name as the field.
      */
     public BankAccount(String ownerName, long openingPence) {
-        // TODO 3
+        // 3
+        if (openingPence < 0){
+            throw new IllegalArgumentException("Opening balance cannot be negative");
+        }
+        this.balancePence = openingPence;
+        this.accountNumber = nextAccountNumber;
+        accountsCreated++;
+        nextAccountNumber++;
+        this.history.add("OPEN " + openingPence);
+        this.ownerName = ownerName;
     }
 
     /** Opens an account with a zero balance. Must be ONE line that calls the other constructor: this(ownerName, 0); */
     public BankAccount(String ownerName) {
-        // TODO 4
+        //  4
+        this(ownerName, 0);
     }
 
     // ---------------------------------------------------------------
@@ -54,15 +70,15 @@ public class BankAccount {
     // ---------------------------------------------------------------
 
     public int getAccountNumber() {
-        return 0; // TODO 5
+        return this.accountNumber; // 5
     }
 
     public String getOwnerName() {
-        return null; // TODO 5
+        return this.ownerName; // 5
     }
 
     public long getBalancePence() {
-        return -1; // TODO 5
+        return this.balancePence; // 5
     }
 
     /**
@@ -70,7 +86,12 @@ public class BankAccount {
      * Records "DEPOSIT <pence>".
      */
     public void deposit(long pence) {
-        // TODO 6
+        // 6
+        if (pence <= 0){
+            throw new IllegalArgumentException("Deposit must be positive");
+        }
+        this.balancePence += pence;
+        this.history.add("DEPOSIT " + pence);
     }
 
     /**
@@ -79,8 +100,17 @@ public class BankAccount {
      * Otherwise: subtract, record "WITHDRAW <pence>", return true.
      */
     public boolean withdraw(long pence) {
-        // TODO 7
-        return false;
+        // 7
+        if (pence <= 0){
+            throw new IllegalArgumentException("Withdrawal must be positive");
+        }
+        if (this.balancePence < pence){
+            this.history.add("DECLINED " + pence);
+            return false;
+        }
+        this.balancePence -= pence;
+        this.history.add("WITHDRAW " + pence);
+        return true;
     }
 
     /**
@@ -94,8 +124,15 @@ public class BankAccount {
      * In Java, 'private' means private to the CLASS, not to the object.
      */
     public boolean transferTo(BankAccount other, long pence) {
-        // TODO 8
-        return false;
+        // 8
+        if (other == null || other == this || pence <= 0 || pence > this.balancePence){
+            return false;
+        }
+        this.balancePence -= pence;
+        other.balancePence += pence;
+        this.history.add("TRANSFER_OUT " + pence + " to #" + other.accountNumber);
+        other.history.add("TRANSFER_IN " + pence + " from #" + this.accountNumber);
+        return true;
     }
 
     /**
@@ -103,13 +140,13 @@ public class BankAccount {
      * (Returning the field itself would let anyone call getHistory().add("fake entry").)
      */
     public ArrayList<String> getHistory() {
-        // TODO 9: return new ArrayList<>(history);
-        return new ArrayList<>();
+        // 9: return new ArrayList<>(history);
+        return new ArrayList<>(history);
     }
 
     /** A static method: called on the CLASS, as in BankAccount.getAccountsCreated(), not on an object. */
     public static int getAccountsCreated() {
-        return -1; // TODO 10
+        return accountsCreated; // 10
     }
 
     /**
@@ -119,6 +156,7 @@ public class BankAccount {
      */
     @Override
     public String toString() {
-        return super.toString(); // TODO 11 (the @Override annotation is explained in the next batch)
+        return String.format("Account #%d [%s] balance £%.2f", this.accountNumber, this.ownerName,
+                (double) this.balancePence / 100); //  11 (the @Override annotation is explained in the next batch)
     }
 }

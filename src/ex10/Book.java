@@ -4,25 +4,34 @@ package ex10;
 // By default, equals() inherited from Object works like ==, comparing references. You'll change that.
 public class Book {
 
-    // TODO 1: private final fields isbn (String), title (String), author (String), year (int),
+    //  1: private final fields isbn (String), title (String), author (String), year (int),
     //         plus a NON-final boolean 'available' that starts as true.
+    private final String isbn;
+    private final String title;
+    private final String author;
+    private final int year;
+    private boolean available = true;
 
-    // TODO 2: constructor Book(String isbn, String title, String author, int year)
+    //  2: constructor Book(String isbn, String title, String author, int year)
     public Book(String isbn, String title, String author, int year) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+        this.year = year;
     }
 
-    // TODO 3: getters. Convention: boolean getters start with "is", as in isAvailable()
-    public String getIsbn() { return null; }
-    public String getTitle() { return null; }
-    public String getAuthor() { return null; }
-    public int getYear() { return 0; }
-    public boolean isAvailable() { return false; }
+    // 3: getters. Convention: boolean getters start with "is", as in isAvailable()
+    public String getIsbn() { return isbn; }
+    public String getTitle() { return title; }
+    public String getAuthor() { return author; }
+    public int getYear() { return year; }
+    public boolean isAvailable() { return available; }
 
-    // TODO 4: a setter for 'available' (the Library needs to flip it on checkout and return)
-    public void setAvailable(boolean available) { }
+    // 4: a setter for 'available' (the Library needs to flip it on checkout and return)
+    public void setAvailable(boolean available) { this.available = available; }
 
     /**
-     * TODO 5: two books are equal when their ISBNs are equal.
+     *  5: two books are equal when their ISBNs are equal.
      * The parameter type MUST be Object (not Book), or you'd be overloading instead of overriding.
      * Recipe:
      *   1. if (this == other) return true;                     // same object: quick win
@@ -31,22 +40,24 @@ public class Book {
      */
     @Override
     public boolean equals(Object other) {
-        return super.equals(other);
+        if (this == other) { return true; }
+        if (!(other instanceof Book that)) { return false; }
+        return isbn.equals(that.isbn);
     }
 
     /**
-     * TODO 6: the contract says equal objects MUST have equal hash codes.
+     *  6: the contract says equal objects MUST have equal hash codes.
      * (HashSet and HashMap rely on this; you'll use them in the next batch.)
      * Since equality is based on isbn, return isbn.hashCode().
      */
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return isbn.hashCode();
     }
 
-    /** TODO 7: "Clean Code by Robert C. Martin (2008)" */
+    /** 7: "Clean Code by Robert C. Martin (2008)" */
     @Override
     public String toString() {
-        return super.toString();
+        return String.format("%s by %s (%d)", title, author, year);
     }
 }

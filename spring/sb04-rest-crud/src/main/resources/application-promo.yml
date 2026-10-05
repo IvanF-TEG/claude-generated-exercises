@@ -1,0 +1,4 @@
+# GIVEN. Loaded on top of application.yml when the "promo" profile is active.
+freightboard:
+  promo:
+    discount-percent: 20

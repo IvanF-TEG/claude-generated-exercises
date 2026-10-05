@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: freightboard
+  # No datasource URL: Boot starts an in-memory H2 database with a random name. The start-up log shows it:
+  #   "H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:...'"   (user "sa", no password)
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      # SB08: Hibernate no longer creates the tables. Flyway does, from db/migration. Hibernate only CHECKS that the
+      # tables match the entities, and refuses to start if they don't.
+      ddl-auto: validate
+    # Don't keep a database session open while the JSON is being written. Recommended; the default is true.
+    open-in-view: false
+
+# SB03 step 1c: the default pricing values. Property names are kebab-case: they bind to camelCase record components.
+#   freightboard.pricing.distance:    base-fee-pence 2500, pence-per-km 95, free-weight-kg 1000, pence-per-extra-kg 3
+#   freightboard.pricing.weight-band: minimum-pence 4000, heavy-pence-per-km 160, and a LIST of bands:
+#                                     {max-kg 1000, pence-per-km 60} then {max-kg 18000, pence-per-km 110}
+freightboard:
+  pricing:
+    distance:
+      base-fee-pence: 2500
+      pence-per-km: 95
+      free-weight-kg: 1000
+      pence-per-extra-kg: 3
+    weight-band:
+      minimum-pence: 4000
+      heavy-pence-per-km: 160
+      bands:
+        - max-kg: 1000
+          pence-per-km: 60
+        - max-kg: 18000
+          pence-per-km: 110
+  # SB09: the password for the DEMO users in SecurityConfig. Fine for learning; a real app keeps users in a
+  # database or an identity provider, and never has a password in a committed file.
+  security:
+    demo-password: ${FREIGHTBOARD_DEMO_PASSWORD:freight123}
+
+# TODO 1a: Actuator. Only HEALTH, INFO and METRICS are reachable over HTTP (management.endpoints.web.exposure.include).
+#          Health details (each component and its status) are shown only to users who are allowed to see them
+#          (management.endpoint.health.show-details: when-authorized, with roles: ADMIN).
+#          /actuator/info shows everything under "info.*" (switch on management.info.env.enabled), plus build details.
+
+# TODO 5c: show the request id in every log line, between the level and the logger name:
+#          logging.pattern.level: "%5p [%X{requestId:-}]"   (%X{...} reads the MDC; ":-" means "empty if not set")

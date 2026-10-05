@@ -1,0 +1,3 @@
+# Only the built jar needs to reach Docker
+*
+!target/*.jar

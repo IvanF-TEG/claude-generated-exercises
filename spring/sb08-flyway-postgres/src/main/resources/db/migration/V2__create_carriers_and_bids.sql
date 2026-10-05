@@ -1,0 +1,10 @@
+-- TODO 2: two tables, matching the Carrier and Bid entities.
+--   carriers: id (identity primary key), name VARCHAR(255) not null AND unique, max_weight_kg INTEGER not null
+--   bids:     id (identity primary key),
+--             load_id    BIGINT not null, a FOREIGN KEY referencing loads(id)
+--             carrier_id BIGINT not null, a FOREIGN KEY referencing carriers(id)
+--             amount_pence BIGINT not null, status VARCHAR(20) not null,
+--             placed_at TIMESTAMP(6) WITH TIME ZONE not null      (an Instant)
+--   Name your constraints (CONSTRAINT fk_bids_load FOREIGN KEY ...) so error messages are readable.
+--   Also create an INDEX on bids(load_id): "all bids for load 7" is the most common query, and a foreign key
+--   column doesn't get an index automatically in PostgreSQL.
